@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>ReSharper.InternalsVisibleTo</id>
+    <version>$version$</version>
+    <authors>Igal Tabachnik</authors>
+    <owners>Igal Tabachnik</owners>
+    <title>InternalsVisibleTo Helper for ReSharper</title>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Provides IntelliSense completion for the InternalsVisibleTo attribute, including the public key value, when required.</description>
+    <projectUrl>https://github.com/hmemcpy/ReSharper.InternalsVisibleTo</projectUrl>
+    <copyright>Copyright &#x00A9; 2013 Igal Tabachnik</copyright>
+    <tags>resharper internalsvisibleto publickey plugin</tags>
+    <dependencies>
+      <dependency id="Resharper" version="8.0"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\..\output\$configuration$\8.0\*.*" target="ReSharper\v8.0\plugins"/>
+  </files>
+</package>
