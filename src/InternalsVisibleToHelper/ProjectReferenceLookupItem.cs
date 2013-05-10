@@ -10,7 +10,7 @@ using JetBrains.Util;
 
 namespace InternalsVisibleTo.ReSharper
 {
-    public class ProjectReferenceLookupItem : TextLookupItem
+    public partial class ProjectReferenceLookupItem : TextLookupItem
     {
         private const string ellipsis = "…";
         private readonly IProject project;
@@ -31,6 +31,8 @@ namespace InternalsVisibleTo.ReSharper
             {
                 RichText publicKeyDisplay = LookupUtil.FormatLookupString("PublicKey=" + ellipsis);
                 publicKeyDisplay.SetStyle(TextStyle.FromForeColor(SystemColors.GrayText));
+                
+                // aligns the "PublicKey=..." text to the right, as if it were a type name
                 DisplayTypeName = publicKeyDisplay;
             }
 
@@ -51,21 +53,6 @@ namespace InternalsVisibleTo.ReSharper
             sb.Append("\"");
 
             return sb.ToString();
-        }
-
-        private static byte[] GetPublicKey(ProjectImpl projectImpl)
-        {
-            if (projectImpl == null)
-            {
-                return null;
-            }
-            
-            if (projectImpl.OutputAssemblyInfo != null)
-            {
-                return projectImpl.OutputAssemblyInfo.AssemblyNameInfo.GetPublicKey();
-            }
-
-            return null;
         }
     }
 }
