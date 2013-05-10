@@ -56,7 +56,7 @@ namespace InternalsVisibleTo.ReSharper
         {
             IRangeMarker rangeMarker = new TextRange(context.BasicContext.CaretDocumentRange.TextRange.StartOffset).CreateRangeMarker(context.BasicContext.Document);
             ISolution solution = context.BasicContext.CompletionManager.Solution;
-            foreach (IProject project in solution.GetAllProjects().Except(new[] { solution.MiscFilesProject, solution.SolutionProject }))
+            foreach (IProject project in solution.GetAllProjects().Where(p => p.IsProjectFromUserView()))
             {
                 IconId iconId = presentationService.GetIcon(project);
                 var lookupItem = new ProjectReferenceLookupItem(project, iconId, rangeMarker);
@@ -70,14 +70,14 @@ namespace InternalsVisibleTo.ReSharper
         private static TextLookupRanges EvaluateRanges(CSharpCodeCompletionContext context)
         {
             CodeCompletionContext basicContext = context.BasicContext;
-            TextRange textRange1 = basicContext.SelectedRange.TextRange;
-            TextRange textRange2 = basicContext.CaretDocumentRange.TextRange;
+            TextRange selectedRange = basicContext.SelectedRange.TextRange;
+            TextRange documentRange = basicContext.CaretDocumentRange.TextRange;
             TreeOffset caretTreeOffset = basicContext.CaretTreeOffset;
             var tokenNode = basicContext.File.FindTokenAt(caretTreeOffset) as ITokenNode;
 
             if (tokenNode != null && tokenNode.GetTokenType() == CSharpTokenType.STRING_LITERAL)
-                textRange2 = tokenNode.GetDocumentRange().TextRange;
-            var replaceRange = new TextRange(textRange2.StartOffset, Math.Max(textRange2.EndOffset, textRange1.EndOffset));
+                documentRange = tokenNode.GetDocumentRange().TextRange;
+            var replaceRange = new TextRange(documentRange.StartOffset, Math.Max(documentRange.EndOffset, selectedRange.EndOffset));
 
             return new TextLookupRanges(replaceRange, replaceRange);
         }
