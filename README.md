@@ -16,7 +16,7 @@ You can use the new NuGet-based [Extension Manager](http://blogs.jetbrains.com/d
 
 *At the time of writing, ReSharper 8 is currently in EAP, please select "Include Prerelease" in the package selector:*
 
-![](http://i.imgur.com/l21q2ne.png)
+![](http://i.imgur.com/IGrO9XE.png)
 
 For ReSharper 7:
 - 
