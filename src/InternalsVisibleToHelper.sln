@@ -13,6 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D0286A
 		.nuget\ReSharper.InternalsVisibleTo.nuspec = .nuget\ReSharper.InternalsVisibleTo.nuspec
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExternalAnnotations", "ExternalAnnotations", "{ACF6608A-199E-4F26-881E-5D4FEC3D69D5}"
+	ProjectSection(SolutionItems) = preProject
+		Attributes.xml = Attributes.xml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
