@@ -24,8 +24,13 @@ namespace InternalsVisibleTo.ReSharper
 
         protected override RichText GetDisplayName()
         {
-            RichText displayName = LookupUtil.FormatLookupString(string.Format("\"{0}\"", project.Name));
-            
+            string projectDisplayName = GetProjectDisplayName(project);
+            RichText displayName = LookupUtil.FormatLookupString(string.Format("\"{0}\"", projectDisplayName));
+            if (!projectDisplayName.Equals(project.Name, StringComparison.OrdinalIgnoreCase))
+            {
+                LookupUtil.AddInformationText(displayName, project.Name);
+            }
+
             byte[] publicKey = GetPublicKey(project as ProjectImpl);
             if (publicKey != null)
             {
@@ -42,7 +47,7 @@ namespace InternalsVisibleTo.ReSharper
         private static string GetCompleteText(IProject project)
         {
             var sb = new StringBuilder();
-            sb.AppendFormat("\"{0}", project.Name);
+            sb.AppendFormat("\"{0}", GetProjectDisplayName(project));
 
             byte[] publicKey = GetPublicKey(project as ProjectImpl);
             if (publicKey != null)
@@ -53,6 +58,11 @@ namespace InternalsVisibleTo.ReSharper
             sb.Append("\"");
 
             return sb.ToString();
+        }
+
+        private static string GetProjectDisplayName(IProject project)
+        {
+            return project.GetOutputAssemblyName();
         }
     }
 }
