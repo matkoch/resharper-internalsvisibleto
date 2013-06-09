@@ -12,7 +12,7 @@ If the target project is signed with a strong name, the public key is **automati
 
 For ReSharper 8
 -
-You can use the new NuGet-based [Extension Manager](http://blogs.jetbrains.com/dotnet/2013/05/resharper-8-eap-nuget-based-extension-manager/), select **Tools - Extensions Manager**, and grab for a package called [**ReSharper.InternalsVisibleTo**](https://resharper-plugins.jetbrains.com/packages/ReSharper.InternalsVisibleTo/).
+You can use the new NuGet-based [Extension Manager](http://blogs.jetbrains.com/dotnet/2013/05/resharper-8-eap-nuget-based-extension-manager/), select **ReSharper - Extensions Manager**, and grab for a package called [**ReSharper.InternalsVisibleTo**](https://resharper-plugins.jetbrains.com/packages/ReSharper.InternalsVisibleTo/).
 
 *At the time of writing, ReSharper 8 is in EAP stage, please select "Include Prerelease" in the package selector:*
 
