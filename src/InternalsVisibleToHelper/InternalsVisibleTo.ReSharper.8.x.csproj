@@ -55,6 +55,9 @@
     <Compile Include="ProjectReferenceLookupItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="InternalsVisibleToSuggestionRule.8.x.cs" />
+  </ItemGroup>
   <PropertyGroup>
     <ReSharperSdkTargets Condition=" '$(ReSharperSdkTargets)' == '' ">$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v8.0</ReSharperSdkTargets>
   </PropertyGroup>

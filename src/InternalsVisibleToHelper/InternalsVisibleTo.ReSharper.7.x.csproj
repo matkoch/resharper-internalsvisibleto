@@ -50,6 +50,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InternalsVisibleToSuggestionRule.7.x.cs" />
     <Compile Include="InternalsVisibleToSuggestionRule.cs" />
     <Compile Include="ProjectReferenceLookupItem.7.x.cs" />
     <Compile Include="ProjectReferenceLookupItem.cs" />
