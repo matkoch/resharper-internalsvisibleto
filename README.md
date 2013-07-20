@@ -16,7 +16,7 @@ You can use the new NuGet-based [Extension Manager](http://www.jetbrains.com/res
 
 For ReSharper 7:
 - 
-- Download the latest zip file: [ReSharper.InternalsVisibleTo.v0.1.1.zip](https://github.com/hmemcpy/ReSharper.InternalsVisibleTo/raw/releases/ReSharper.InternalsVisibleTo.v0.1.1.zip)
+- Download the latest zip file: [ReSharper.InternalsVisibleTo.v0.1.2.zip](https://github.com/hmemcpy/ReSharper.InternalsVisibleTo/releases/download/v0.1.2/ReSharper.InternalsVisibleTo.v0.1.2.zip)
 - Extract everything
 - Run the **Install-InternalsVisibleTo.7.1.bat** batch file
 
