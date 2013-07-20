@@ -79,7 +79,7 @@ namespace InternalsVisibleTo.ReSharper
                 documentRange = tokenNode.GetDocumentRange().TextRange;
             var replaceRange = new TextRange(documentRange.StartOffset, Math.Max(documentRange.EndOffset, selectedRange.EndOffset));
 
-            return GetTextLookupRanges(replaceRange);
+            return CreateTextLookupRanges(replaceRange);
         }
     }
 }

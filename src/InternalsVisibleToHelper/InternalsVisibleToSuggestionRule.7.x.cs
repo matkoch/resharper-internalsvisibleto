@@ -5,7 +5,7 @@ namespace InternalsVisibleTo.ReSharper
 {
     public partial class InternalsVisibleToSuggestionRule
     {
-        private static TextLookupRanges GetTextLookupRanges(TextRange replaceRange)
+        private static TextLookupRanges CreateTextLookupRanges(TextRange replaceRange)
         {
             return new TextLookupRanges(replaceRange, false, replaceRange);
         }
