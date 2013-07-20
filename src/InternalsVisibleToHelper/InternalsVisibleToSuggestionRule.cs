@@ -17,7 +17,7 @@ using JetBrains.Util;
 namespace InternalsVisibleTo.ReSharper
 {
     [Language(typeof(CSharpLanguage))]
-    public class InternalsVisibleToSuggestionRule : ItemsProviderOfSpecificContext<CSharpCodeCompletionContext>
+    public partial class InternalsVisibleToSuggestionRule : ItemsProviderOfSpecificContext<CSharpCodeCompletionContext>
     {
         private readonly IClrTypeName internalsAttributeClrName = new ClrTypeName("System.Runtime.CompilerServices.InternalsVisibleToAttribute");
         private readonly ProjectModelElementPresentationService presentationService;
@@ -79,7 +79,7 @@ namespace InternalsVisibleTo.ReSharper
                 documentRange = tokenNode.GetDocumentRange().TextRange;
             var replaceRange = new TextRange(documentRange.StartOffset, Math.Max(documentRange.EndOffset, selectedRange.EndOffset));
 
-            return new TextLookupRanges(replaceRange, false, replaceRange);
+            return CreateTextLookupRanges(replaceRange);
         }
     }
 }
