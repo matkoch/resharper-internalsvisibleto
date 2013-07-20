@@ -6,8 +6,8 @@ using JetBrains.Application.PluginSupport;
 [assembly: AssemblyProduct("InternalsVisibleTo.ReSharper")]
 [assembly: AssemblyCopyright("Copyright © Igal Tabachnik, 2013")]
 
-[assembly: AssemblyVersion("0.1.1")]
-[assembly: AssemblyFileVersion("0.1.1")]
+[assembly: AssemblyVersion("0.1.2")]
+[assembly: AssemblyFileVersion("0.1.2")]
 
 [assembly: PluginTitle("InternalsVisibleTo Helper for ReSharper")]
 [assembly: PluginDescription("Provides IntelliSense completion for the InternalsVisibleTo attribute, including the public key value, when required.\r\n" +
