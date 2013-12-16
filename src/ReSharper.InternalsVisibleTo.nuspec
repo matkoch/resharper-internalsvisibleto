@@ -15,7 +15,7 @@
     <copyright>Copyright &#x00A9; 2013 Igal Tabachnik</copyright>
     <tags>resharper internalsvisibleto publickey tests unit test nunit mstest xunit</tags>
     <dependencies>
-      <dependency id="Resharper" version="8.0"/>
+      <dependency id="Resharper" version="[8.0,8.1]"/>
     </dependencies>
   </metadata>
   <files>
