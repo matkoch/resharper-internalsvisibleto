@@ -1,7 +1,0 @@
-﻿<assembly name="mscorlib">
-  <member name="M:System.Reflection.AssemblyKeyFileAttribute.#ctor(System.String)">
-    <parameter name="keyFile">
-      <attribute ctor="M:JetBrains.Annotations.PathReferenceAttribute.#ctor" />
-    </parameter>
-  </member>
-</assembly>
