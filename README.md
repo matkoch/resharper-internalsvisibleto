@@ -12,13 +12,7 @@ If the target project is signed with a strong name, the public key is **automati
 
 For ReSharper 8
 -
-You can use the new NuGet-based [Extension Manager](http://www.jetbrains.com/resharper/whatsnew/index.html#extension_manager), select **ReSharper - Extensions Manager**, and grab for a package called [**ReSharper.InternalsVisibleTo**](https://resharper-plugins.jetbrains.com/packages/ReSharper.InternalsVisibleTo/).
-
-For ReSharper 7:
-- 
-- Download the latest zip file: [ReSharper.InternalsVisibleTo.v0.1.2.zip](https://github.com/hmemcpy/ReSharper.InternalsVisibleTo/releases/download/v0.1.2/ReSharper.InternalsVisibleTo.v0.1.2.zip)
-- Extract everything
-- Run the **Install-InternalsVisibleTo.7.1.bat** batch file
+To install, simply get [**ReSharper.InternalsVisibleTo**](https://resharper-plugins.jetbrains.com/packages/ReSharper.InternalsVisibleTo/) package from ReSharper's [Extensions Gallery](http://resharper-plugins.jetbrains.com/).
 
 ## Bugs? Questions? Suggestions?
 

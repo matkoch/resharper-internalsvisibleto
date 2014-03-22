@@ -53,9 +53,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InternalsVisibleToSuggestionRule.8.x.cs" />
     <Compile Include="InternalsVisibleToSuggestionRule.cs" />
-    <Compile Include="ProjectReferenceLookupItem.8.x.cs" />
     <Compile Include="ProjectReferenceLookupItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
