@@ -44,11 +44,12 @@ namespace InternalsVisibleTo.ReSharper
             }
 
             ITreeNode nodeAt = context.BasicContext.File.FindNodeAt(context.BasicContext.CaretDocumentRange);
-            if (nodeAt == null)
+            if (nodeAt == null || nodeAt.Parent == null)
                 return false;
+
             var csharpArgument = (nodeAt.Parent is ICSharpArgument ? nodeAt.Parent : nodeAt.Parent.Parent) as ICSharpArgument;
             var attribute = (csharpArgument != null ? csharpArgument.Parent : nodeAt.Parent) as IAttribute;
-            if (attribute == null)
+            if (attribute == null || attribute.TypeReference == null)
                 return false;
 
             var typeElement = attribute.TypeReference.Resolve().DeclaredElement as ITypeElement;
