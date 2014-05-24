@@ -53,13 +53,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InternalsVisibleToSuggestionRule.cs" />
-    <Compile Include="ProjectReferenceLookupItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.InternalsVisibleTo.ReSharper.8.1.config" />
   </ItemGroup>
+  <Import Project="..\Shared\ReSharper.InternalsVisibleTo\ReSharper.InternalsVisibleTo.projitems" Label="Shared" Condition="Exists('..\Shared\ReSharper.InternalsVisibleTo\ReSharper.InternalsVisibleTo.projitems')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\JetBrains.ReSharper.SDK.8.1.555\build\JetBrains.ReSharper.SDK.Targets" Condition="Exists('..\packages\JetBrains.ReSharper.SDK.8.1.555\build\JetBrains.ReSharper.SDK.Targets')" />
 </Project>

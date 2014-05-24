@@ -23,7 +23,7 @@ using JetBrains.Metadata.Reader.Impl;
 namespace InternalsVisibleTo.ReSharper
 {
     [Language(typeof(CSharpLanguage))]
-    public partial class InternalsVisibleToSuggestionRule : ItemsProviderOfSpecificContext<CSharpCodeCompletionContext>
+    public class InternalsVisibleToSuggestionRule : ItemsProviderOfSpecificContext<CSharpCodeCompletionContext>
     {
         private readonly IClrTypeName internalsAttributeClrName = new ClrTypeName("System.Runtime.CompilerServices.InternalsVisibleToAttribute");
         private readonly ProjectModelElementPresentationService presentationService;

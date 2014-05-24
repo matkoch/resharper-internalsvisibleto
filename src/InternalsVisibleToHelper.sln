@@ -1,18 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.30219.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InternalsVisibleTo.ReSharper.8.1", "InternalsVisibleToHelper\InternalsVisibleTo.ReSharper.8.1.csproj", "{4EA5E8EA-F8C2-4EE8-A9E9-1C89520E9B6C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InternalsVisibleTo.ReSharper.8.2", "InternalsVisibleToHelper\InternalsVisibleTo.ReSharper.8.2.csproj", "{08BF2820-0AE5-4F45-9494-D9563D83E335}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InternalsVisibleTo.ReSharper.9.0", "InternalsVisibleToHelper\InternalsVisibleTo.ReSharper.9.0.csproj", "{159DE425-14E9-47CC-A977-68F264D42765}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A662175A-5CF0-49B4-AD2D-DB27B98161B1}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\packages.config = .nuget\packages.config
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,10 +21,6 @@ Global
 		{08BF2820-0AE5-4F45-9494-D9563D83E335}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08BF2820-0AE5-4F45-9494-D9563D83E335}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08BF2820-0AE5-4F45-9494-D9563D83E335}.Release|Any CPU.Build.0 = Release|Any CPU
-		{159DE425-14E9-47CC-A977-68F264D42765}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{159DE425-14E9-47CC-A977-68F264D42765}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{159DE425-14E9-47CC-A977-68F264D42765}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{159DE425-14E9-47CC-A977-68F264D42765}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

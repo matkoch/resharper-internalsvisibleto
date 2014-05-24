@@ -13,7 +13,7 @@ using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure.LookupI
 
 namespace InternalsVisibleTo.ReSharper
 {
-    public partial class ProjectReferenceLookupItem : TextLookupItem
+    public class ProjectReferenceLookupItem : TextLookupItem
     {
         private const string ellipsis = "…";
         private readonly IProject project;
