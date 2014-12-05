@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>ReSharper.InternalsVisibleTo.R90</id>
+    <version>$version$</version>
+    <authors>Igal Tabachnik</authors>
+    <owners>Igal Tabachnik</owners>
+    <title>InternalsVisibleTo Helper for ReSharper</title>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://raw.github.com/hmemcpy/ReSharper.InternalsVisibleTo/master/License.txt</licenseUrl>
+    <description>Provides IntelliSense completion for the InternalsVisibleTo attribute, including the public key value, when required.</description>
+    <releaseNotes>Support for ReSharper 8.1</releaseNotes>
+    <projectUrl>https://github.com/hmemcpy/ReSharper.InternalsVisibleTo</projectUrl>
+    <iconUrl>https://raw.github.com/hmemcpy/ReSharper.InternalsVisibleTo/master/logo.png</iconUrl>
+    <copyright>Copyright &#x00A9; 2013, 2014 Igal Tabachnik</copyright>
+    <tags>resharper internalsvisibleto publickey tests unit test nunit mstest xunit</tags>
+    <dependencies>
+      <dependency id="Wave" version="[1.0]"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\output\$configuration$\9.0\InternalsVisibleTo.ReSharper.9.0.*" target="dotFiles\"/>
+  </files>
+</package>

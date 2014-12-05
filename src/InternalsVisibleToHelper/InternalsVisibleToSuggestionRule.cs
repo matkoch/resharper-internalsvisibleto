@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
 using JetBrains.DocumentModel;
+
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.CSharp.CodeCompletion.Infrastructure;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure;
+using JetBrains.ReSharper.Feature.Services.CSharp.CodeCompletion.Infrastructure;
 using JetBrains.ReSharper.Feature.Services.Lookup;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
@@ -13,6 +14,11 @@ using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.UI.Icons;
 using JetBrains.Util;
+#if RESHARPER9
+using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure.LookupItems;
+using JetBrains.Metadata.Reader.API;
+using JetBrains.Metadata.Reader.Impl;
+#endif
 
 namespace InternalsVisibleTo.ReSharper
 {

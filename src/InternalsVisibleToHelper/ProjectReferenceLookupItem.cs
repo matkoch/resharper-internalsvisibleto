@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Drawing;
 using System.Text;
+using JetBrains.Annotations;
 using JetBrains.DocumentModel;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Lookup;
 using JetBrains.UI.Icons;
 using JetBrains.UI.RichText;
-using JetBrains.Util;
+#if RESHARPER9
+using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure.LookupItems.Impl;
+#endif
 
 namespace InternalsVisibleTo.ReSharper
 {
@@ -52,12 +55,23 @@ namespace InternalsVisibleTo.ReSharper
             byte[] publicKey = GetPublicKey(project as ProjectImpl);
             if (publicKey != null)
             {
-                string publicKeyString = publicKey.ToHexString();
+                string publicKeyString = ToHexString(publicKey);
                 sb.AppendFormat(", PublicKey={0}", publicKeyString);
             }
             sb.Append("\"");
 
             return sb.ToString();
+        }
+
+        [NotNull]
+        private static string ToHexString([NotNull] byte[] buf)
+        {
+            if (buf == null)
+                throw new ArgumentNullException("buf");
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (byte num in buf)
+                stringBuilder.Append(num.ToString("X2"));
+            return stringBuilder.ToString();
         }
 
         private static string GetProjectDisplayName(IProject project)
