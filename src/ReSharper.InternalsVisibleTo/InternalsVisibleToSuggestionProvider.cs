@@ -1,28 +1,25 @@
 ﻿using System;
 using System.Linq;
 using JetBrains.DocumentModel;
-
+using JetBrains.Metadata.Reader.API;
+using JetBrains.Metadata.Reader.Impl;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure;
+using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure.LookupItems;
 using JetBrains.ReSharper.Feature.Services.CSharp.CodeCompletion.Infrastructure;
-using JetBrains.ReSharper.Feature.Services.Lookup;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
-using JetBrains.ReSharper.Psi.CSharp.Parsing;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
+using JetBrains.ReSharper.Psi.CSharp.Util.Literals;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.UI.Icons;
 using JetBrains.Util;
-#if RESHARPER9
-using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure.LookupItems;
-using JetBrains.Metadata.Reader.API;
-#endif
 
-namespace InternalsVisibleTo.ReSharper
+namespace ReSharper.InternalsVisibleTo
 {
     [Language(typeof(CSharpLanguage))]
-    public class InternalsVisibleToSuggestionProvider : CSharpItemsProviderBase<CSharpCodeCompletionContext>
+    public class InternalsVisibleToSuggestionProvider : ItemsProviderOfSpecificContext<CSharpCodeCompletionContext>
     {
         private readonly IClrTypeName internalsAttributeClrName = new ClrTypeName("System.Runtime.CompilerServices.InternalsVisibleToAttribute");
         private readonly ProjectModelElementPresentationService presentationService;
@@ -37,21 +34,19 @@ namespace InternalsVisibleTo.ReSharper
             CodeCompletionType codeCompletionType = context.BasicContext.CodeCompletionType;
             if (codeCompletionType != CodeCompletionType.BasicCompletion &&
                 codeCompletionType != CodeCompletionType.SmartCompletion &&
-                codeCompletionType != CodeCompletionType.AutomaticCompletion)
+                codeCompletionType != CodeCompletionType.ImportCompletion)
             {
                 return false;
             }
 
             ITreeNode nodeAt = context.BasicContext.File.FindNodeAt(context.BasicContext.CaretDocumentRange);
-            if (nodeAt == null || nodeAt.Parent == null)
+            if (nodeAt?.Parent == null)
                 return false;
 
             var csharpArgument = (nodeAt.Parent is ICSharpArgument ? nodeAt.Parent : nodeAt.Parent.Parent) as ICSharpArgument;
             var attribute = (csharpArgument != null ? csharpArgument.Parent : nodeAt.Parent) as IAttribute;
-            if (attribute == null || attribute.TypeReference == null)
-                return false;
 
-            var typeElement = attribute.TypeReference.Resolve().DeclaredElement as ITypeElement;
+            var typeElement = attribute?.TypeReference?.Resolve().DeclaredElement as ITypeElement;
             if (typeElement == null)
                 return false;
 
@@ -68,8 +63,9 @@ namespace InternalsVisibleTo.ReSharper
                 IconId iconId = presentationService.GetIcon(project);
                 var lookupItem = new ProjectReferenceLookupItem(project, iconId, rangeMarker);
                 lookupItem.InitializeRanges(EvaluateRanges(context), context.BasicContext);
-                collector.AddAtDefaultPlace(lookupItem);
+                collector.Add(lookupItem);
             }
+
             return true;
         }
 
@@ -81,8 +77,9 @@ namespace InternalsVisibleTo.ReSharper
             TreeOffset caretTreeOffset = basicContext.CaretTreeOffset;
             var tokenNode = basicContext.File.FindTokenAt(caretTreeOffset) as ITokenNode;
 
-            if (tokenNode != null && tokenNode.GetTokenType() == CSharpTokenType.STRING_LITERAL)
+            if (tokenNode != null && tokenNode.IsAnyStringLiteral())
                 documentRange = tokenNode.GetDocumentRange().TextRange;
+
             var replaceRange = new TextRange(documentRange.StartOffset, Math.Max(documentRange.EndOffset, selectedRange.EndOffset));
 
             return new TextLookupRanges(replaceRange, replaceRange);

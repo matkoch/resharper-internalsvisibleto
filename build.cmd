@@ -4,7 +4,7 @@ if "%config%" == "" (
    set config=Release
 )
  
-set version=0.1.5
+set version=0.2.0-RC
 if not "%PackageVersion%" == "" (
    set version=%PackageVersion%
 )
@@ -14,8 +14,9 @@ if "%nuget%" == "" (
         set nuget=src\.nuget\nuget.exe
 )
 
-%nuget% restore src\InternalsVisibleToHelper.sln
-%WINDIR%\Microsoft.NET\Framework\v4.0.30319\msbuild src\InternalsVisibleToHelper.sln /t:Rebuild /p:Configuration="%config%" /m /v:M /fl /flp:LogFile=msbuild.log;Verbosity=Normal /nr:false
+%nuget% restore src\ReSharper.InternalsVisibleTo.sln
+"%ProgramFiles(x86)%\MSBuild\14.0\Bin\msbuild" src\ReSharper.InternalsVisibleTo.sln /t:Rebuild /p:Configuration="%config%" /m /v:M /fl /flp:LogFile=msbuild.log;Verbosity=Normal /nr:false
  
-%nuget% pack "src\ReSharper.InternalsVisibleTo.nuspec" -NoPackageAnalysis -verbosity detailed -o . -Version %version% -p Configuration="%config%"
-%nuget% pack "src\ReSharper.InternalsVisibleTo.R90.nuspec" -NoPackageAnalysis -verbosity detailed -o . -Version %version% -p Configuration="%config%"
+set package_id="ReSharper.InternalsVisibleTo"
+
+%nuget% pack "src\ReSharper.InternalsVisibleTo.nuspec" -NoPackageAnalysis -Version %version% -Properties "Configuration=%config%;ReSharperDep=Wave;ReSharperVer=[3.0];PackageId=%package_id%"

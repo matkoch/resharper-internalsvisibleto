@@ -1,28 +1,25 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Xml;
 using JetBrains.Annotations;
 using JetBrains.DataFlow;
 using JetBrains.ProjectModel;
 using JetBrains.ProjectModel.Caches;
-using JetBrains.ProjectModel.Properties.CSharp;
+using JetBrains.Util;
+using Microsoft.CodeAnalysis.Interop;
 
 namespace ReSharper.InternalsVisibleTo
 {
-    [SolutionComponent]
+    [SolutionInstanceComponent]
     internal class SnkDataProvider : IProjectFileDataCache
     {
         [NotNull]
-        private readonly ProjectFileDataCache projectDataCache;
-        [NotNull]
-        private readonly ISolution solution;
+        public ProjectFileDataCache ProjectDataCache { get; }
 
-        private IProject currentProject;
-
-        public SnkDataProvider([NotNull] Lifetime lifetime, [NotNull] ProjectFileDataCache projectDataCache, [NotNull] ISolution solution)
+        public SnkDataProvider([NotNull] Lifetime lifetime, [NotNull] ProjectFileDataCache projectDataCache)
         {
-            this.projectDataCache = projectDataCache;
-            this.solution = solution;
+            ProjectDataCache = projectDataCache;
 
             projectDataCache.RegisterCache(lifetime, this);
         }
@@ -30,50 +27,39 @@ namespace ReSharper.InternalsVisibleTo
         public object Read(BinaryReader reader)
         {
             int length = reader.ReadInt32();
+            if (length == 0)
+                return EmptyArray<byte>.Instance;
             return reader.ReadBytes(length);
         }
 
         public void Write(BinaryWriter writer, object data)
         {
             var bytes = (byte[])data;
-
             writer.Write(bytes.Length);
             writer.Write(bytes);
         }
 
-        public bool CanHandle(IProjectFile projectFile)
-        {
-            currentProject = projectFile.GetProject();
-            if (currentProject == null)
-            {
-                return false;
-            }
+        private FileSystemPath currentProjectPath;
 
-            return currentProject.ProjectProperties.BuildSettings is CSharpBuildSettings;
+        public bool CanHandle(FileSystemPath projectFileLocation)
+        {
+            currentProjectPath = projectFileLocation;
+            return true;
         }
 
         public object BuildData(XmlDocument document)
         {
-            string keyName = ExtractPublicKey(document);
-            if (string.IsNullOrWhiteSpace(keyName))
+            string keyContainer = ExtractPublicKeyFile(document);
+            if (!string.IsNullOrWhiteSpace(keyContainer))
             {
-                return null;
+                string keyFilePath = currentProjectPath.Directory.Combine(keyContainer).FullPath;
+                return ReadKeysFromPath(keyFilePath);
             }
 
-
+            return EmptyArray<byte>.Instance;
         }
 
-        public Action OnDataChanged(IProjectFile projectFile, object oldData, object newData)
-        {
-            return null;
-        }
-
-        public int Version
-        {
-            get { return 0; }
-        }
-
-        private string ExtractPublicKey(XmlDocument document)
+        private static string ExtractPublicKeyFile(XmlDocument document)
         {
             XmlElement documentElement = document.DocumentElement;
             if (documentElement == null || documentElement.Name != "Project")
@@ -89,18 +75,92 @@ namespace ReSharper.InternalsVisibleTo
             }
 
             XmlNode keyNode = documentElement.SelectSingleNode("//*[local-name()='AssemblyOriginatorKeyFile']");
-            if (keyNode == null)
+
+            return keyNode?.InnerText;
+        }
+
+        private byte[] ReadKeysFromPath(string fullPath)
+        {
+            try
             {
-                return null;
+                var fileContent = File.ReadAllBytes(fullPath);
+                byte[] publicKey = IsPublicKeyBlob(fileContent) ? fileContent : GetPublicKey(fileContent);
+                return publicKey;
+            }
+            catch (Exception ex)
+            {
+                throw new IOException(ex.Message);
+            }
+        }
+
+        //The definition of a public key blob from StrongName.h
+
+        //typedef struct {
+        //    unsigned int SigAlgId;
+        //    unsigned int HashAlgId;
+        //    ULONG cbPublicKey;
+        //    BYTE PublicKey[1]
+        //} PublicKeyBlob; 
+
+        //__forceinline bool IsValidPublicKeyBlob(const PublicKeyBlob *p, const size_t len)
+        //{
+        //    return ((VAL32(p->cbPublicKey) + (sizeof(ULONG) * 3)) == len &&         // do the lengths match?
+        //            GET_ALG_CLASS(VAL32(p->SigAlgID)) == ALG_CLASS_SIGNATURE &&     // is it a valid signature alg?
+        //            GET_ALG_CLASS(VAL32(p->HashAlgID)) == ALG_CLASS_HASH);         // is it a valid hash alg?
+        //}
+
+        private static uint GET_ALG_CLASS(uint x) { return x & (7 << 13); }
+
+        internal static unsafe bool IsPublicKeyBlob(byte[] keyFileContents)
+        {
+            const uint ALG_CLASS_SIGNATURE = 1 << 13;
+            const uint ALG_CLASS_HASH = 4 << 13;
+
+            if (keyFileContents.Length < (4 * 3))
+            {
+                return false;
             }
 
-            return keyNode.InnerText;
+            fixed (byte* p = keyFileContents)
+            {
+                return (GET_ALG_CLASS((uint)Marshal.ReadInt32((IntPtr)p)) == ALG_CLASS_SIGNATURE) &&
+                    (GET_ALG_CLASS((uint)Marshal.ReadInt32((IntPtr)p, 4)) == ALG_CLASS_HASH) &&
+                    (Marshal.ReadInt32((IntPtr)p, 8) + (4 * 3) == keyFileContents.Length);
+            }
         }
 
-        [CanBeNull]
-        public byte[] GetPublicKey(IProject project)
+        private byte[] GetPublicKey(byte[] keyFileContents)
         {
-            return projectDataCache.GetData<byte[]>(this, project, null);
+            IClrStrongName strongName = GetStrongNameInterface();
+
+            IntPtr keyBlob;
+            int keyBlobByteCount;
+
+            unsafe
+            {
+                fixed (byte* p = keyFileContents)
+                {
+                    strongName.StrongNameGetPublicKey(null, (IntPtr)p, keyFileContents.Length, out keyBlob, out keyBlobByteCount);
+                }
+            }
+
+            byte[] pubKey = new byte[keyBlobByteCount];
+            Marshal.Copy(keyBlob, pubKey, 0, keyBlobByteCount);
+            strongName.StrongNameFreeBuffer(keyBlob);
+
+            return pubKey;
         }
+
+        private IClrStrongName GetStrongNameInterface()
+        {
+            return ClrStrongName.GetInstance();
+        }
+
+        public Action OnDataChanged(FileSystemPath projectFileLocation, object oldData, object newData)
+        {
+            return null;
+        }
+
+        public int Version => 0;
     }
 }

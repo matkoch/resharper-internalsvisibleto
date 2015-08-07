@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Drawing;
 using System.Text;
-using JetBrains.Annotations;
 using JetBrains.DocumentModel;
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure.LookupItems.Impl;
 using JetBrains.ReSharper.Feature.Services.Lookup;
 using JetBrains.UI.Icons;
 using JetBrains.UI.RichText;
-#if RESHARPER9
-#endif
+using JetBrains.Util;
 
-namespace InternalsVisibleTo.ReSharper
+namespace ReSharper.InternalsVisibleTo
 {
     public class ProjectReferenceLookupItem : TextLookupItem
     {
@@ -27,14 +26,14 @@ namespace InternalsVisibleTo.ReSharper
         protected override RichText GetDisplayName()
         {
             string projectDisplayName = GetProjectDisplayName(project);
-            RichText displayName = LookupUtil.FormatLookupString(string.Format("\"{0}\"", projectDisplayName));
+            RichText displayName = LookupUtil.FormatLookupString($"\"{projectDisplayName}\"");
             if (!projectDisplayName.Equals(project.Name, StringComparison.OrdinalIgnoreCase))
             {
                 LookupUtil.AddInformationText(displayName, project.Name);
             }
 
-            byte[] publicKey = GetPublicKey(project as ProjectImpl);
-            if (publicKey != null)
+            string publicKeyString = GetPublicKeyString(project as ProjectImpl);
+            if (!string.IsNullOrWhiteSpace(publicKeyString))
             {
                 RichText publicKeyDisplay = LookupUtil.FormatLookupString("PublicKey=" + ellipsis);
                 publicKeyDisplay.SetStyle(TextStyle.FromForeColor(SystemColors.GrayText));
@@ -51,10 +50,9 @@ namespace InternalsVisibleTo.ReSharper
             var sb = new StringBuilder();
             sb.AppendFormat("\"{0}", GetProjectDisplayName(project));
 
-            byte[] publicKey = GetPublicKey(project);
-            if (publicKey != null)
+            string publicKeyString = GetPublicKeyString(project);
+            if (!string.IsNullOrWhiteSpace(publicKeyString))
             {
-                string publicKeyString = ToHexString(publicKey);
                 sb.AppendFormat(", PublicKey={0}", publicKeyString);
             }
             sb.Append("\"");
@@ -62,32 +60,20 @@ namespace InternalsVisibleTo.ReSharper
             return sb.ToString();
         }
 
-        [NotNull]
-        private static string ToHexString([NotNull] byte[] buf)
-        {
-            if (buf == null)
-                throw new ArgumentNullException("buf");
-            StringBuilder stringBuilder = new StringBuilder();
-            foreach (byte num in buf)
-                stringBuilder.Append(num.ToString("X2"));
-            return stringBuilder.ToString();
-        }
-
         private static string GetProjectDisplayName(IProject project)
         {
             return project.GetOutputAssemblyName();
         }
 
-        private static byte[] GetPublicKey(IProject project)
+        private static string GetPublicKeyString(IProject project)
         {
-            if (project == null)
-            {
-                return null;
-            }
+            var solution = project.GetSolution();
+            var snkProvider = solution.GetComponent<SnkDataProvider>();
 
-            var snkProvider = project.GetSolution().GetComponent<SnkDataProvider>();
-
-            return snkProvider.GetPublicKey(project);
+            byte[] data = snkProvider.ProjectDataCache.GetData<byte[]>(snkProvider, project.ProjectFileLocation, null);
+            return data?.Length > 0
+                ? (SnkDataProvider.IsPublicKeyBlob(data) ? StringUtil.ToHexString(data) : null)
+                : null;
         }
     }
 }
