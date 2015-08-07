@@ -8,7 +8,6 @@ using JetBrains.ReSharper.Feature.Services.Lookup;
 using JetBrains.UI.Icons;
 using JetBrains.UI.RichText;
 #if RESHARPER9
-using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure.LookupItems.Impl;
 #endif
 
 namespace InternalsVisibleTo.ReSharper
@@ -52,7 +51,7 @@ namespace InternalsVisibleTo.ReSharper
             var sb = new StringBuilder();
             sb.AppendFormat("\"{0}", GetProjectDisplayName(project));
 
-            byte[] publicKey = GetPublicKey(project as ProjectImpl);
+            byte[] publicKey = GetPublicKey(project);
             if (publicKey != null)
             {
                 string publicKeyString = ToHexString(publicKey);
@@ -79,19 +78,16 @@ namespace InternalsVisibleTo.ReSharper
             return project.GetOutputAssemblyName();
         }
 
-        private static byte[] GetPublicKey(ProjectImpl projectImpl)
+        private static byte[] GetPublicKey(IProject project)
         {
-            if (projectImpl == null)
+            if (project == null)
             {
                 return null;
             }
 
-            if (projectImpl.OutputAssemblyInfo != null)
-            {
-                return projectImpl.OutputAssemblyInfo.AssemblyNameInfo.GetPublicKey();
-            }
+            var snkProvider = project.GetSolution().GetComponent<SnkDataProvider>();
 
-            return null;
+            return snkProvider.GetPublicKey(project);
         }
     }
 }

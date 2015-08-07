@@ -17,18 +17,17 @@ using JetBrains.Util;
 #if RESHARPER9
 using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure.LookupItems;
 using JetBrains.Metadata.Reader.API;
-using JetBrains.Metadata.Reader.Impl;
 #endif
 
 namespace InternalsVisibleTo.ReSharper
 {
     [Language(typeof(CSharpLanguage))]
-    public class InternalsVisibleToSuggestionRule : ItemsProviderOfSpecificContext<CSharpCodeCompletionContext>
+    public class InternalsVisibleToSuggestionProvider : CSharpItemsProviderBase<CSharpCodeCompletionContext>
     {
         private readonly IClrTypeName internalsAttributeClrName = new ClrTypeName("System.Runtime.CompilerServices.InternalsVisibleToAttribute");
         private readonly ProjectModelElementPresentationService presentationService;
 
-        public InternalsVisibleToSuggestionRule(ProjectModelElementPresentationService presentationService)
+        public InternalsVisibleToSuggestionProvider(ProjectModelElementPresentationService presentationService)
         {
             this.presentationService = presentationService;
         }
@@ -61,8 +60,9 @@ namespace InternalsVisibleTo.ReSharper
 
         protected override bool AddLookupItems(CSharpCodeCompletionContext context, GroupedItemsCollector collector)
         {
-            IRangeMarker rangeMarker = new TextRange(context.BasicContext.CaretDocumentRange.TextRange.StartOffset).CreateRangeMarker(context.BasicContext.Document);
             ISolution solution = context.BasicContext.CompletionManager.Solution;
+
+            IRangeMarker rangeMarker = new TextRange(context.BasicContext.CaretDocumentRange.TextRange.StartOffset).CreateRangeMarker(context.BasicContext.Document);
             foreach (IProject project in solution.GetAllProjects().Where(p => p.IsProjectFromUserView()))
             {
                 IconId iconId = presentationService.GetIcon(project);
@@ -70,7 +70,6 @@ namespace InternalsVisibleTo.ReSharper
                 lookupItem.InitializeRanges(EvaluateRanges(context), context.BasicContext);
                 collector.AddAtDefaultPlace(lookupItem);
             }
-
             return true;
         }
 

@@ -3,9 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30219.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InternalsVisibleTo.ReSharper.8.1", "InternalsVisibleToHelper\InternalsVisibleTo.ReSharper.8.1.csproj", "{4EA5E8EA-F8C2-4EE8-A9E9-1C89520E9B6C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InternalsVisibleTo.ReSharper.8.2", "InternalsVisibleToHelper\InternalsVisibleTo.ReSharper.8.2.csproj", "{08BF2820-0AE5-4F45-9494-D9563D83E335}"
+
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ReSharper.InternalsVisibleTo", "ReSharper.InternalsVisibleTo\ReSharper.InternalsVisibleTo.csproj", "{08BF2820-0AE5-4F45-9494-D9563D83E335}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

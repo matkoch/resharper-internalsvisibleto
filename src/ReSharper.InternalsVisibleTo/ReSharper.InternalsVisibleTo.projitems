@@ -9,7 +9,8 @@
     <Import_RootNamespace>ReSharper.InternalsVisibleTo</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)InternalsVisibleToSuggestionRule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InternalsVisibleToSuggestionProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ProjectReferenceLookupItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SnkDataProvider.cs" />
   </ItemGroup>
 </Project>
