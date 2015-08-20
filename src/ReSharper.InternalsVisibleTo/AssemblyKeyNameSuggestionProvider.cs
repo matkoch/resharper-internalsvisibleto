@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
+using System.Security.Cryptography;
 using JetBrains.DocumentModel;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.Metadata.Reader.Impl;
@@ -13,38 +15,38 @@ using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.CSharp.Util.Literals;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.UI.Icons;
 using JetBrains.Util;
 
 namespace ReSharper.InternalsVisibleTo
 {
     [Language(typeof(CSharpLanguage))]
-    public class InternalsVisibleToSuggestionProvider : ItemsProviderOfSpecificContext<CSharpCodeCompletionContext>
+    public class AssemblyKeyNameSuggestionProvider : ItemsProviderOfSpecificContext<CSharpCodeCompletionContext>
     {
-        private readonly IClrTypeName internalsAttributeClrName = new ClrTypeName("System.Runtime.CompilerServices.InternalsVisibleToAttribute");
-        private readonly ProjectModelElementPresentationService presentationService;
-
-        public InternalsVisibleToSuggestionProvider(ProjectModelElementPresentationService presentationService)
-        {
-            this.presentationService = presentationService;
-        }
+        private readonly IClrTypeName assemblyKeyNameAttributeClrName = new ClrTypeName("System.Reflection.AssemblyKeyNameAttribute");
 
         protected override bool IsAvailable(CSharpCodeCompletionContext context)
         {
-            return context.IsInsideElement(internalsAttributeClrName);
+            return context.IsInsideElement(assemblyKeyNameAttributeClrName);
         }
 
         protected override bool AddLookupItems(CSharpCodeCompletionContext context, GroupedItemsCollector collector)
         {
-            ISolution solution = context.BasicContext.CompletionManager.Solution;
-
             IRangeMarker rangeMarker = new TextRange(context.BasicContext.CaretDocumentRange.TextRange.StartOffset).CreateRangeMarker(context.BasicContext.Document);
-            foreach (IProject project in solution.GetAllProjects().Where(p => p.IsProjectFromUserView()))
+
+            foreach (var kc in KeyUtilities.EnumerateKeyContainers("Microsoft Strong Cryptographic Provider"))
             {
-                IconId iconId = presentationService.GetIcon(project);
-                var lookupItem = new ProjectReferenceLookupItem(project, iconId, rangeMarker);
-                lookupItem.InitializeRanges(context.EvaluateRanges(), context.BasicContext);
-                collector.Add(lookupItem);
+                using (var prov = new RSACryptoServiceProvider(new CspParameters { KeyContainerName = kc, Flags = CspProviderFlags.UseMachineKeyStore }))
+                {
+                    if (prov.CspKeyContainerInfo.Exportable)
+                    {
+                        StrongNameKeyPair kp = new StrongNameKeyPair(prov.ExportCspBlob(true));
+                        if (kp.PublicKey.Length != 160) continue;
+                        
+                        var lookupItem = new SimpleTextLookupItem($"\"{kc}\"", rangeMarker);
+                        lookupItem.InitializeRanges(context.EvaluateRanges(), context.BasicContext);
+                        collector.Add(lookupItem);
+                    }
+                }
             }
 
             return true;
