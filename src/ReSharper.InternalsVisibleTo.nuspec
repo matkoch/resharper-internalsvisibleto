@@ -9,7 +9,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>https://raw.github.com/hmemcpy/ReSharper.InternalsVisibleTo/master/License.txt</licenseUrl>
     <description>Provides IntelliSense completion for the InternalsVisibleTo attribute, including the public key value, when required.</description>
-    <releaseNotes>Support for ReSharper 9.2</releaseNotes>
+    <releaseNotes>Support for ReSharper 10.0</releaseNotes>
     <projectUrl>https://github.com/hmemcpy/ReSharper.InternalsVisibleTo</projectUrl>
     <iconUrl>https://raw.github.com/hmemcpy/ReSharper.InternalsVisibleTo/master/logo.png</iconUrl>
     <copyright>Copyright &#x00A9; 2013-2015 Igal Tabachnik</copyright>
@@ -19,7 +19,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\output\$configuration$\9.0\ReSharper.InternalsVisibleTo.dll" target="dotFiles" />
-    <file src="..\output\$configuration$\9.0\ReSharper.InternalsVisibleTo.pdb" target="dotFiles" />    
+    <file src="..\output\$configuration$\10.0\ReSharper.InternalsVisibleTo.dll" target="dotFiles" />
+    <file src="..\output\$configuration$\10.0\ReSharper.InternalsVisibleTo.pdb" target="dotFiles" />    
   </files>
 </package>

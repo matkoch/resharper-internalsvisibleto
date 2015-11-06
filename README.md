@@ -1,4 +1,4 @@
-## InternalsVisibleTo helper for ReSharper 9 ##
+## InternalsVisibleTo helper for ReSharper ##
 
 This plugin provides IntelliSense (code-completion) for the [`InternalsVisibleTo`](http://msdn.microsoft.com/en-us/library/system.runtime.compilerservices.internalsvisibletoattribute.aspx) attribute, allowing you to select a project within your solution easily:
 
