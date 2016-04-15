@@ -8,7 +8,7 @@ If the target project is signed with a strong name, the public key is **automati
 
 ![](http://i.imgur.com/cjDEZEZ.png)
 
-To install, simply get **ReSharper.InternalsVisibleTo** package from ReSharper's [Extensions Gallery](http://resharper-plugins.jetbrains.com/).
+To install, get **ReSharper.InternalsVisibleTo** package from ReSharper's [Extensions Gallery](http://resharper-plugins.jetbrains.com/).
 
 ## Bugs? Questions? Suggestions?
 

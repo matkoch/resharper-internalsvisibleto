@@ -9,10 +9,10 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <licenseUrl>https://raw.github.com/hmemcpy/ReSharper.InternalsVisibleTo/master/License.txt</licenseUrl>
     <description>Provides IntelliSense completion for the InternalsVisibleTo attribute, including the public key value, when required.</description>
-    <releaseNotes>Support for ReSharper 10.0</releaseNotes>
+    <releaseNotes>Support for ReSharper 2016.1</releaseNotes>
     <projectUrl>https://github.com/hmemcpy/ReSharper.InternalsVisibleTo</projectUrl>
     <iconUrl>https://raw.github.com/hmemcpy/ReSharper.InternalsVisibleTo/master/logo.png</iconUrl>
-    <copyright>Copyright &#x00A9; 2013-2015 Igal Tabachnik</copyright>
+    <copyright>Copyright &#x00A9; 2013-2016 Igal Tabachnik</copyright>
     <tags>resharper internalsvisibleto publickey tests unit test nunit mstest xunit</tags>
     <dependencies>
       <dependency id="$ReSharperDep$" version="$ReSharperVer$"/>
