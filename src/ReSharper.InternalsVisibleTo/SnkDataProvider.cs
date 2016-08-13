@@ -11,20 +11,18 @@ using Microsoft.CodeAnalysis.Interop;
 
 namespace ReSharper.InternalsVisibleTo
 {
-    [SolutionInstanceComponent]
-    internal class SnkDataProvider : IProjectFileDataCache
+    [SolutionComponent]
+    internal class SnkDataProvider : IProjectFileDataProvider<byte[]>
     {
-        [NotNull]
-        public ProjectFileDataCache ProjectDataCache { get; }
+        [NotNull] public IProjectFileDataCache Cache { get; private set; }
 
-        public SnkDataProvider([NotNull] Lifetime lifetime, [NotNull] ProjectFileDataCache projectDataCache)
+        public SnkDataProvider([NotNull] Lifetime lifetime, [NotNull] IProjectFileDataCache cache)
         {
-            ProjectDataCache = projectDataCache;
-
-            projectDataCache.RegisterCache(lifetime, this);
+            Cache = cache;
+            cache.RegisterCache(lifetime, this);
         }
 
-        public object Read(BinaryReader reader)
+        public byte[] Read(FileSystemPath projectFileLocation, BinaryReader reader)
         {
             int length = reader.ReadInt32();
             if (length == 0)
@@ -32,31 +30,32 @@ namespace ReSharper.InternalsVisibleTo
             return reader.ReadBytes(length);
         }
 
-        public void Write(BinaryWriter writer, object data)
+        public void Write(FileSystemPath projectFileLocation, BinaryWriter writer, byte[] data)
         {
-            var bytes = (byte[])data;
-            writer.Write(bytes.Length);
-            writer.Write(bytes);
+            writer.Write(data.Length);
+            writer.Write(data);
         }
-
-        private FileSystemPath currentProjectPath;
 
         public bool CanHandle(FileSystemPath projectFileLocation)
         {
-            currentProjectPath = projectFileLocation;
             return true;
         }
 
-        public object BuildData(XmlDocument document)
+        public byte[] BuildData(FileSystemPath path, XmlDocument document)
         {
             string keyContainer = ExtractPublicKeyFile(document);
             if (!string.IsNullOrWhiteSpace(keyContainer))
             {
-                string keyFilePath = currentProjectPath.Directory.Combine(keyContainer).FullPath;
+                string keyFilePath = path.Directory.Combine(keyContainer).FullPath;
                 return ReadKeysFromPath(keyFilePath);
             }
 
             return EmptyArray<byte>.Instance;
+        }
+
+        public Action OnDataChanged(FileSystemPath projectFileLocation, byte[] oldData, byte[] newData)
+        {
+            return null;
         }
 
         private static string ExtractPublicKeyFile(XmlDocument document)
@@ -162,5 +161,6 @@ namespace ReSharper.InternalsVisibleTo
         }
 
         public int Version => 0;
+      
     }
 }

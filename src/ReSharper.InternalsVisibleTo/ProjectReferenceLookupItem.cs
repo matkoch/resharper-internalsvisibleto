@@ -62,7 +62,7 @@ namespace ReSharper.InternalsVisibleTo
 
         private static string GetProjectDisplayName(IProject project)
         {
-            return project.GetOutputAssemblyName();
+            return project.GetOutputAssemblyName(project.GetCurrentTargetFrameworkId());
         }
 
         private static string GetPublicKeyString(IProject project)
@@ -70,7 +70,7 @@ namespace ReSharper.InternalsVisibleTo
             var solution = project.GetSolution();
             var snkProvider = solution.GetComponent<SnkDataProvider>();
 
-            byte[] data = snkProvider.ProjectDataCache.GetData<byte[]>(snkProvider, project.ProjectFileLocation, null);
+            byte[] data = snkProvider.Cache.GetData(snkProvider, project.ProjectFileLocation, null);
             return data?.Length > 0
                 ? (SnkDataProvider.IsPublicKeyBlob(data) ? StringUtil.ToHexString(data) : null)
                 : null;
