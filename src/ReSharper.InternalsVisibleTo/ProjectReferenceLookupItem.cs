@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Text;
 using JetBrains.DocumentModel;
+using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure.LookupItems.Impl;
 using JetBrains.ReSharper.Feature.Services.Lookup;
@@ -62,7 +63,7 @@ namespace ReSharper.InternalsVisibleTo
 
         private static string GetProjectDisplayName(IProject project)
         {
-            return project.GetOutputAssemblyName();
+            return project.GetOutputAssemblyName(TargetFrameworkId.Default);
         }
 
         private static string GetPublicKeyString(IProject project)
@@ -70,7 +71,7 @@ namespace ReSharper.InternalsVisibleTo
             var solution = project.GetSolution();
             var snkProvider = solution.GetComponent<SnkDataProvider>();
 
-            byte[] data = snkProvider.ProjectDataCache.GetData<byte[]>(snkProvider, project.ProjectFileLocation, null);
+            byte[] data = snkProvider.ProjectDataCache.GetData(snkProvider, project.ProjectFileLocation, null);
             return data?.Length > 0
                 ? (SnkDataProvider.IsPublicKeyBlob(data) ? StringUtil.ToHexString(data) : null)
                 : null;

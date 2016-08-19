@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Xml;
@@ -12,31 +13,16 @@ using Microsoft.CodeAnalysis.Interop;
 namespace ReSharper.InternalsVisibleTo
 {
     [SolutionInstanceComponent]
-    internal class SnkDataProvider : IProjectFileDataCache
+    internal class SnkDataProvider : IProjectFileDataProvider<byte[]>
     {
         [NotNull]
-        public ProjectFileDataCache ProjectDataCache { get; }
+        public ProjectFileDataCacheImpl ProjectDataCache { get; }
 
-        public SnkDataProvider([NotNull] Lifetime lifetime, [NotNull] ProjectFileDataCache projectDataCache)
+        public SnkDataProvider([NotNull] Lifetime lifetime, [NotNull] ProjectFileDataCacheImpl projectDataCache)
         {
             ProjectDataCache = projectDataCache;
 
             projectDataCache.RegisterCache(lifetime, this);
-        }
-
-        public object Read(BinaryReader reader)
-        {
-            int length = reader.ReadInt32();
-            if (length == 0)
-                return EmptyArray<byte>.Instance;
-            return reader.ReadBytes(length);
-        }
-
-        public void Write(BinaryWriter writer, object data)
-        {
-            var bytes = (byte[])data;
-            writer.Write(bytes.Length);
-            writer.Write(bytes);
         }
 
         private FileSystemPath currentProjectPath;
@@ -47,7 +33,24 @@ namespace ReSharper.InternalsVisibleTo
             return true;
         }
 
-        public object BuildData(XmlDocument document)
+        public int Version { get; }
+
+        public byte[] Read(FileSystemPath projectFileLocation, BinaryReader reader)
+        {
+            int length = reader.ReadInt32();
+            if (length == 0)
+                return EmptyArray<byte>.Instance;
+            return reader.ReadBytes(length);
+        }
+
+        public void Write(FileSystemPath projectFileLocation, BinaryWriter writer, byte[] data)
+        {
+            var bytes = data;
+            writer.Write(bytes.Length);
+            writer.Write(bytes);
+        }
+
+        public byte[] BuildData(FileSystemPath projectFileLocation, XmlDocument document)
         {
             string keyContainer = ExtractPublicKeyFile(document);
             if (!string.IsNullOrWhiteSpace(keyContainer))
@@ -57,6 +60,11 @@ namespace ReSharper.InternalsVisibleTo
             }
 
             return EmptyArray<byte>.Instance;
+        }
+
+        public Action OnDataChanged(FileSystemPath projectFileLocation, byte[] oldData, byte[] newData)
+        {
+            return null;
         }
 
         private static string ExtractPublicKeyFile(XmlDocument document)
@@ -155,12 +163,5 @@ namespace ReSharper.InternalsVisibleTo
         {
             return ClrStrongName.GetInstance();
         }
-
-        public Action OnDataChanged(FileSystemPath projectFileLocation, object oldData, object newData)
-        {
-            return null;
-        }
-
-        public int Version => 0;
     }
 }
