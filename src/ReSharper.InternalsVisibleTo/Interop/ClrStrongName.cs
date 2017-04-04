@@ -2,7 +2,6 @@
 
 using System;
 using System.Runtime.InteropServices;
-using System.Security;
 
 namespace Microsoft.CodeAnalysis.Interop
 {
@@ -29,8 +28,8 @@ namespace Microsoft.CodeAnalysis.Interop
 
         internal static string GetRuntimeVersion()
         {
-            // When running in a complus environment we must respect the specified CLR version.  This 
-            // important to keeping internal builds running. 
+            // When running in a complus environment we must respect the specified CLR version.  This
+            // important to keeping internal builds running.
             if (!string.IsNullOrEmpty(Environment.GetEnvironmentVariable("COMPLUS_InstallRoot")))
             {
                 var version = Environment.GetEnvironmentVariable("COMPLUS_Version");

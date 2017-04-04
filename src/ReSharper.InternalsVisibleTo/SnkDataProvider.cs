@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Xml;
@@ -108,7 +107,7 @@ namespace ReSharper.InternalsVisibleTo
         //    unsigned int HashAlgId;
         //    ULONG cbPublicKey;
         //    BYTE PublicKey[1]
-        //} PublicKeyBlob; 
+        //} PublicKeyBlob;
 
         //__forceinline bool IsValidPublicKeyBlob(const PublicKeyBlob *p, const size_t len)
         //{

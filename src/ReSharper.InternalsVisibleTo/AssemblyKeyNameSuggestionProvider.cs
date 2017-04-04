@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using JetBrains.DocumentModel;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.Metadata.Reader.Impl;
-using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure.LookupItems;
 using JetBrains.ReSharper.Feature.Services.CSharp.CodeCompletion.Infrastructure;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
-using JetBrains.ReSharper.Psi.CSharp.Tree;
-using JetBrains.ReSharper.Psi.CSharp.Util.Literals;
-using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.Util;
 
 namespace ReSharper.InternalsVisibleTo
@@ -41,7 +36,7 @@ namespace ReSharper.InternalsVisibleTo
                     {
                         StrongNameKeyPair kp = new StrongNameKeyPair(prov.ExportCspBlob(true));
                         if (kp.PublicKey.Length != 160) continue;
-                        
+
                         var lookupItem = new SimpleTextLookupItem($"\"{kc}\"", rangeMarker);
                         lookupItem.InitializeRanges(context.EvaluateRanges(), context.BasicContext);
                         collector.Add(lookupItem);

@@ -38,7 +38,7 @@ namespace ReSharper.InternalsVisibleTo
             {
                 RichText publicKeyDisplay = LookupUtil.FormatLookupString("PublicKey=" + ellipsis);
                 publicKeyDisplay.SetStyle(TextStyle.FromForeColor(SystemColors.GrayText));
-                
+
                 // aligns the "PublicKey=..." text to the right, as if it were a type name
                 DisplayTypeName = publicKeyDisplay;
             }
