@@ -19,7 +19,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\output\$configuration$\10.0\ReSharper.InternalsVisibleTo.dll" target="dotFiles" />
-    <file src="..\output\$configuration$\10.0\ReSharper.InternalsVisibleTo.pdb" target="dotFiles" />    
+    <file src="bin\$configuration$\ReSharper.InternalsVisibleTo.*" target="dotFiles" />
   </files>
 </package>
