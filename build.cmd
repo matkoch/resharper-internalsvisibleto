@@ -4,7 +4,7 @@ if "%config%" == "" (
    set config=Release
 )
  
-set version=2017.1.0
+set version=2017.2.0-pre01
 if not "%PackageVersion%" == "" (
    set version=%PackageVersion%
 )
@@ -19,4 +19,4 @@ if "%nuget%" == "" (
  
 set package_id="ReSharper.InternalsVisibleTo"
 
-%nuget% pack "src\ReSharper.InternalsVisibleTo.nuspec" -NoPackageAnalysis -Version %version% -Properties "Configuration=%config%;ReSharperDep=Wave;ReSharperVer=[8.0];PackageId=%package_id%"
+%nuget% pack "src\ReSharper.InternalsVisibleTo.nuspec" -NoPackageAnalysis -Version %version% -Properties "Configuration=%config%;ReSharperDep=Wave;ReSharperVer=[9.0];PackageId=%package_id%"

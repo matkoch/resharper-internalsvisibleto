@@ -10,7 +10,6 @@ using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure.LookupI
 using JetBrains.ReSharper.Feature.Services.CSharp.CodeCompletion.Infrastructure;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
-using JetBrains.Util;
 
 namespace ReSharper.InternalsVisibleTo
 {
@@ -24,23 +23,22 @@ namespace ReSharper.InternalsVisibleTo
             return context.IsInsideElement(assemblyKeyNameAttributeClrName);
         }
 
-        protected override bool AddLookupItems(CSharpCodeCompletionContext context, GroupedItemsCollector collector)
+        protected override bool AddLookupItems(CSharpCodeCompletionContext context, IItemsCollector collector)
         {
-            IRangeMarker rangeMarker = new TextRange(context.BasicContext.CaretDocumentRange.TextRange.StartOffset).CreateRangeMarker(context.BasicContext.Document);
+            var rangeMarker = context.BasicContext.CaretDocumentOffset.CreateRangeMarker();
 
             foreach (var kc in KeyUtilities.EnumerateKeyContainers("Microsoft Strong Cryptographic Provider"))
             {
                 using (var prov = new RSACryptoServiceProvider(new CspParameters { KeyContainerName = kc, Flags = CspProviderFlags.UseMachineKeyStore }))
                 {
-                    if (prov.CspKeyContainerInfo.Exportable)
-                    {
-                        StrongNameKeyPair kp = new StrongNameKeyPair(prov.ExportCspBlob(true));
-                        if (kp.PublicKey.Length != 160) continue;
+                    if (!prov.CspKeyContainerInfo.Exportable) continue;
 
-                        var lookupItem = new SimpleTextLookupItem($"\"{kc}\"", rangeMarker);
-                        lookupItem.InitializeRanges(context.EvaluateRanges(), context.BasicContext);
-                        collector.Add(lookupItem);
-                    }
+                    var kp = new StrongNameKeyPair(prov.ExportCspBlob(true));
+                    if (kp.PublicKey.Length != 160) continue;
+
+                    var lookupItem = new SimpleTextLookupItem($"\"{kc}\"", rangeMarker);
+                    lookupItem.InitializeRanges(context.EvaluateRanges(), context.BasicContext);
+                    collector.Add(lookupItem);
                 }
             }
 

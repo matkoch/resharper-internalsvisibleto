@@ -9,8 +9,6 @@ using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure.LookupI
 using JetBrains.ReSharper.Feature.Services.CSharp.CodeCompletion.Infrastructure;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
-using JetBrains.UI.Icons;
-using JetBrains.Util;
 
 namespace ReSharper.InternalsVisibleTo
 {
@@ -30,14 +28,14 @@ namespace ReSharper.InternalsVisibleTo
             return context.IsInsideElement(internalsAttributeClrName);
         }
 
-        protected override bool AddLookupItems(CSharpCodeCompletionContext context, GroupedItemsCollector collector)
+        protected override bool AddLookupItems(CSharpCodeCompletionContext context, IItemsCollector collector)
         {
-            ISolution solution = context.BasicContext.CompletionManager.Solution;
+            var solution = context.BasicContext.CompletionManager.Solution;
+            var rangeMarker = context.BasicContext.CaretDocumentOffset.CreateRangeMarker();
 
-            IRangeMarker rangeMarker = new TextRange(context.BasicContext.CaretDocumentRange.TextRange.StartOffset).CreateRangeMarker(context.BasicContext.Document);
-            foreach (IProject project in solution.GetAllProjects().Where(p => p.IsProjectFromUserView()))
+            foreach (var project in solution.GetAllProjects().Where(p => p.IsProjectFromUserView()))
             {
-                IconId iconId = presentationService.GetIcon(project);
+                var iconId = presentationService.GetIcon(project);
                 var lookupItem = new ProjectReferenceLookupItem(project, iconId, rangeMarker);
                 lookupItem.InitializeRanges(context.EvaluateRanges(), context.BasicContext);
                 collector.Add(lookupItem);

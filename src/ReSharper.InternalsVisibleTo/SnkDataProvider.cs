@@ -32,7 +32,7 @@ namespace ReSharper.InternalsVisibleTo
             return true;
         }
 
-        public int Version { get; }
+        public int Version { get; } = 0;
 
         public byte[] Read(FileSystemPath projectFileLocation, BinaryReader reader)
         {

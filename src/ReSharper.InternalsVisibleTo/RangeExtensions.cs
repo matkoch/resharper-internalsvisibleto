@@ -14,32 +14,30 @@ namespace ReSharper.InternalsVisibleTo
     {
         public static TextLookupRanges EvaluateRanges(this CSharpCodeCompletionContext context)
         {
-            CodeCompletionContext basicContext = context.BasicContext;
-            TextRange selectedRange = basicContext.SelectedRange.TextRange;
-            TextRange documentRange = basicContext.CaretDocumentRange.TextRange;
-            TreeOffset caretTreeOffset = basicContext.CaretTreeOffset;
+            var basicContext = context.BasicContext;
+            var selectedRange = basicContext.SelectedRange.TextRange;
+            var documentRange = new TextRange(basicContext.CaretDocumentOffset.Offset);
+            var caretTreeOffset = basicContext.CaretTreeOffset;
             var tokenNode = basicContext.File.FindTokenAt(caretTreeOffset) as ITokenNode;
 
             if (tokenNode != null && tokenNode.IsAnyStringLiteral())
-                documentRange = tokenNode.GetDocumentRange().TextRange;
+              documentRange = tokenNode.GetDocumentRange().TextRange;
 
             var replaceRange = new TextRange(documentRange.StartOffset, Math.Max(documentRange.EndOffset, selectedRange.EndOffset));
 
-            return new TextLookupRanges(replaceRange, replaceRange);
+            return new TextLookupRanges(replaceRange, replaceRange, basicContext.Document);
         }
 
         public static bool IsInsideElement(this CSharpCodeCompletionContext context, IClrTypeName typeName)
         {
-            ITreeNode nodeAt = context.BasicContext.File.FindNodeAt(context.BasicContext.CaretDocumentRange);
-            if (nodeAt?.Parent == null)
-                return false;
+            var nodeAt = context.BasicContext.File.FindNodeAt(context.BasicContext.CaretDocumentOffset);
+            if (nodeAt?.Parent == null) return false;
 
             var csharpArgument = (nodeAt.Parent is ICSharpArgument ? nodeAt.Parent : nodeAt.Parent.Parent) as ICSharpArgument;
             var attribute = (csharpArgument != null ? csharpArgument.Parent : nodeAt.Parent) as IAttribute;
 
             var typeElement = attribute?.TypeReference?.Resolve().DeclaredElement as ITypeElement;
-            if (typeElement == null)
-                return false;
+            if (typeElement == null) return false;
 
             return typeElement.GetClrName().Equals(typeName);
         }
