@@ -13,36 +13,38 @@ using JetBrains.ReSharper.Psi.CSharp;
 
 namespace ReSharper.InternalsVisibleTo
 {
-    [Language(typeof(CSharpLanguage))]
-    public class AssemblyKeyNameSuggestionProvider : ItemsProviderOfSpecificContext<CSharpCodeCompletionContext>
+  [Language(typeof(CSharpLanguage))]
+  public class AssemblyKeyNameSuggestionProvider : ItemsProviderOfSpecificContext<CSharpCodeCompletionContext>
+  {
+    private readonly IClrTypeName assemblyKeyNameAttributeClrName =
+      new ClrTypeName("System.Reflection.AssemblyKeyNameAttribute");
+
+    protected override bool IsAvailable(CSharpCodeCompletionContext context)
     {
-        private readonly IClrTypeName assemblyKeyNameAttributeClrName = new ClrTypeName("System.Reflection.AssemblyKeyNameAttribute");
-
-        protected override bool IsAvailable(CSharpCodeCompletionContext context)
-        {
-            return context.IsInsideElement(assemblyKeyNameAttributeClrName);
-        }
-
-        protected override bool AddLookupItems(CSharpCodeCompletionContext context, IItemsCollector collector)
-        {
-            var rangeMarker = context.BasicContext.CaretDocumentOffset.CreateRangeMarker();
-
-            foreach (var kc in KeyUtilities.EnumerateKeyContainers("Microsoft Strong Cryptographic Provider"))
-            {
-                using (var prov = new RSACryptoServiceProvider(new CspParameters { KeyContainerName = kc, Flags = CspProviderFlags.UseMachineKeyStore }))
-                {
-                    if (!prov.CspKeyContainerInfo.Exportable) continue;
-
-                    var kp = new StrongNameKeyPair(prov.ExportCspBlob(true));
-                    if (kp.PublicKey.Length != 160) continue;
-
-                    var lookupItem = new SimpleTextLookupItem($"\"{kc}\"", rangeMarker);
-                    lookupItem.InitializeRanges(context.EvaluateRanges(), context.BasicContext);
-                    collector.Add(lookupItem);
-                }
-            }
-
-            return true;
-        }
+      return context.IsInsideElement(assemblyKeyNameAttributeClrName);
     }
+
+    protected override bool AddLookupItems(CSharpCodeCompletionContext context, IItemsCollector collector)
+    {
+      var rangeMarker = context.BasicContext.CaretDocumentOffset.CreateRangeMarker();
+
+      foreach (var kc in KeyUtilities.EnumerateKeyContainers("Microsoft Strong Cryptographic Provider"))
+      {
+        var cspParameters = new CspParameters { KeyContainerName = kc, Flags = CspProviderFlags.UseMachineKeyStore };
+        using (var prov = new RSACryptoServiceProvider(cspParameters))
+        {
+          if (!prov.CspKeyContainerInfo.Exportable) continue;
+
+          var kp = new StrongNameKeyPair(prov.ExportCspBlob(true));
+          if (kp.PublicKey.Length != 160) continue;
+
+          var lookupItem = new SimpleTextLookupItem($"\"{kc}\"", rangeMarker);
+          lookupItem.InitializeRanges(context.EvaluateRanges(), context.BasicContext);
+          collector.Add(lookupItem);
+        }
+      }
+
+      return true;
+    }
+  }
 }

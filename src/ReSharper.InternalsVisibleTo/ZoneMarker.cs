@@ -3,8 +3,8 @@ using JetBrains.ReSharper.Psi.CSharp;
 
 namespace ReSharper.InternalsVisibleTo
 {
-    [ZoneMarker]
-    public class ZoneMarker : IRequire<ILanguageCSharpZone>
-    {
-    }
+  [ZoneMarker]
+  public class ZoneMarker : IRequire<ILanguageCSharpZone>
+  {
+  }
 }
