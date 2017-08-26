@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using JetBrains.DocumentModel;
+﻿using JetBrains.DocumentModel;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.Metadata.Reader.Impl;
 using JetBrains.ProjectModel;
@@ -35,8 +33,10 @@ namespace ReSharper.InternalsVisibleTo
       var solution = context.BasicContext.CompletionManager.Solution;
       var rangeMarker = context.BasicContext.CaretDocumentOffset.CreateRangeMarker();
 
-      foreach (var project in solution.GetAllProjects().Where(p => p.IsProjectFromUserView()))
+      foreach (var project in solution.GetAllProjects())
       {
+        if (!project.IsProjectFromUserView()) continue;
+
         var iconId = presentationService.GetIcon(project);
         var lookupItem = new ProjectReferenceLookupItem(project, iconId, rangeMarker);
 

@@ -1,5 +1,5 @@
-using System;
 using JetBrains.Annotations;
+using JetBrains.DocumentModel;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ReSharper.Feature.Services.CodeCompletion.Infrastructure;
 using JetBrains.ReSharper.Feature.Services.CSharp.CodeCompletion.Infrastructure;
@@ -7,7 +7,6 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.CSharp.Util.Literals;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.Util;
 
 namespace ReSharper.InternalsVisibleTo
 {
@@ -17,19 +16,20 @@ namespace ReSharper.InternalsVisibleTo
     public static TextLookupRanges EvaluateRanges([NotNull] this CSharpCodeCompletionContext context)
     {
       var basicContext = context.BasicContext;
-      var selectedRange = basicContext.SelectedRange.TextRange;
-      var documentRange = new TextRange(basicContext.CaretDocumentOffset.Offset);
-      var caretTreeOffset = basicContext.CaretTreeOffset;
-      var tokenNode = basicContext.File.FindTokenAt(caretTreeOffset) as ITokenNode;
 
-      if (tokenNode != null && tokenNode.IsAnyStringLiteral())
-        documentRange = tokenNode.GetDocumentRange().TextRange;
+      var startOffset = basicContext.CaretDocumentOffset;
+      var endOffset = basicContext.SelectedRange.EndOffset;
 
-      var replaceRange = new TextRange(
-        documentRange.StartOffset,
-        Math.Max(documentRange.EndOffset, selectedRange.EndOffset));
+      if (basicContext.File.FindTokenAt(basicContext.CaretTreeOffset) is ITokenNode tokenNode &&
+          tokenNode.IsAnyStringLiteral())
+      {
+        startOffset = tokenNode.GetDocumentStartOffset();
+        endOffset = tokenNode.GetDocumentEndOffset();
+      }
 
-      return new TextLookupRanges(replaceRange, replaceRange, basicContext.Document);
+      var replaceRange = new DocumentRange(startOffset, endOffset);
+
+      return new TextLookupRanges(replaceRange, replaceRange);
     }
 
     [Pure]
@@ -38,13 +38,15 @@ namespace ReSharper.InternalsVisibleTo
       var nodeAt = context.BasicContext.File.FindNodeAt(context.BasicContext.CaretDocumentOffset);
       if (nodeAt?.Parent == null) return false;
 
-      var csharpArgument = (nodeAt.Parent is ICSharpArgument ? nodeAt.Parent : nodeAt.Parent.Parent) as ICSharpArgument;
-      var attribute = (csharpArgument != null ? csharpArgument.Parent : nodeAt.Parent) as IAttribute;
+      var parentNode = nodeAt.Parent is ICSharpArgument ? nodeAt.Parent : nodeAt.Parent.Parent;
+      var attribute = (parentNode is ICSharpArgument csharpArgument ? csharpArgument.Parent : nodeAt.Parent) as IAttribute;
 
-      var typeElement = attribute?.TypeReference?.Resolve().DeclaredElement as ITypeElement;
-      if (typeElement == null) return false;
+      if (attribute?.TypeReference?.Resolve().DeclaredElement is ITypeElement typeElement)
+      {
+        return typeElement.GetClrName().Equals(typeName);
+      }
 
-      return typeElement.GetClrName().Equals(typeName);
+      return false;
     }
   }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Security.Cryptography;
 using JetBrains.DocumentModel;
 using JetBrains.Metadata.Reader.API;
