@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>$PackageId$</id>
+    <id>ReSharper.InternalsVisibleTo</id>
     <version>$version$</version>
     <authors>Igal Tabachnik</authors>
     <owners>Igal Tabachnik</owners>
@@ -12,10 +12,10 @@
     <releaseNotes>Support for ReSharper 2017.2</releaseNotes>
     <projectUrl>https://github.com/hmemcpy/ReSharper.InternalsVisibleTo</projectUrl>
     <iconUrl>https://raw.github.com/hmemcpy/ReSharper.InternalsVisibleTo/master/logo.png</iconUrl>
-    <copyright>Copyright &#x00A9; 2013-2017 Igal Tabachnik</copyright>
+    <copyright>Copyright &#x00A9; 2013-$currentyear$ Igal Tabachnik</copyright>
     <tags>resharper internalsvisibleto publickey tests unit test nunit mstest xunit</tags>
     <dependencies>
-      <dependency id="$ReSharperDep$" version="$ReSharperVer$"/>
+      <dependency id="Wave" version="[$wave$]"/>
     </dependencies>
   </metadata>
   <files>
