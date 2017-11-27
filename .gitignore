@@ -1,3 +1,4 @@
+*.tmp
 *.pdb
 *.suo
 *.vspcc
@@ -34,6 +35,7 @@ ARMADILLO_CACHE
 *.sbr
 *.sdf
 *.opensdf
+.vs/
 ipch/
 obj/
 [Bb]in
@@ -46,9 +48,6 @@ packages/
 _ReSharper*/
 *.resharper
 [Tt]est[Rr]esult*
-
-#Project files
-[Bb]uild/
 
 #Subversion files
 .svn
