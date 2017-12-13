@@ -19,6 +19,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\$configuration$\ReSharper.InternalsVisibleTo.*" target="dotFiles" />
+    <file src="ReSharper.InternalsVisibleTo\bin\$configuration$\ReSharper.InternalsVisibleTo.*" target="dotFiles" />
   </files>
 </package>
