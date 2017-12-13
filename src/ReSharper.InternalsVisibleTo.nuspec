@@ -7,9 +7,9 @@
     <owners>Igal Tabachnik</owners>
     <title>InternalsVisibleTo Helper for ReSharper</title>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <licenseUrl>https://raw.github.com/hmemcpy/ReSharper.InternalsVisibleTo/master/License.txt</licenseUrl>
+    <licenseUrl>https://github.com/hmemcpy/ReSharper.InternalsVisibleTo/blob/master/LICENSE</licenseUrl>
     <description>Provides IntelliSense completion for the InternalsVisibleTo attribute, including the public key value, when required.</description>
-    <releaseNotes>Support for ReSharper 2017.2</releaseNotes>
+    <releaseNotes>$releasenotes$</releaseNotes>
     <projectUrl>https://github.com/hmemcpy/ReSharper.InternalsVisibleTo</projectUrl>
     <iconUrl>https://raw.github.com/hmemcpy/ReSharper.InternalsVisibleTo/master/logo.png</iconUrl>
     <copyright>Copyright &#x00A9; 2013-$currentyear$ Igal Tabachnik</copyright>

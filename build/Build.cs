@@ -12,6 +12,7 @@ using Nuke.Core.Utilities;
 using Nuke.Core.Utilities.Collections;
 using static Nuke.Common.IO.HttpTasks;
 using static Nuke.Common.IO.SerializationTasks;
+using static Nuke.Common.IO.TextTasks;
 using static Nuke.Common.Tools.MSBuild.MSBuildTasks;
 using static Nuke.Common.Tools.NuGet.NuGetTasks;
 using static Nuke.Common.Tools.NuGetPackageResolver;
@@ -74,12 +75,20 @@ class Build : NukeBuild
             .DependsOn(Compile)
             .Executes(() =>
             {
+                var releaseNotes = ReadAllLines(RootDirectory / "CHANGELOG.md")
+                        .SkipWhile(x => !x.StartsWith("##"))
+                        .Skip(count: 1)
+                        .TakeWhile(x => !string.IsNullOrWhiteSpace(x))
+                        .Select(x => $"\u2022{x.TrimStart('-')}")
+                        .JoinNewLine();
+
                 GlobFiles(SourceDirectory, "*.nuspec")
                         .ForEach(x => NuGetPack(s => DefaultNuGetPack
                                 .SetTargetPath(x)
                                 .SetBasePath(SourceDirectory)
                                 .SetProperty("wave", GetWaveVersion(ProjectFile) + ".0")
                                 .SetProperty("currentyear", DateTime.Now.Year.ToString())
+                                .SetProperty("releasenotes", releaseNotes)
                                 .EnableNoPackageAnalysis()));
             });
 
