@@ -6,6 +6,7 @@
 bin
 Debug
 Release
+.idea
 
 #Armadillo files
 ARMADILLO_CACHE
