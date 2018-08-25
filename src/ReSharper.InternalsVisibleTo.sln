@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = ".build", "..\build\.build.csproj", "{6CAD5F88-1508-4821-B756-506F5B203700}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReSharper.InternalsVisibleTo", "ReSharper.InternalsVisibleTo\ReSharper.InternalsVisibleTo.csproj", "{08BF2820-0AE5-4F45-9494-D9563D83E335}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "..\build\_build.csproj", "{E1CE3231-318C-4764-9A3E-9B6D834B3207}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,8 +13,8 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6CAD5F88-1508-4821-B756-506F5B203700}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6CAD5F88-1508-4821-B756-506F5B203700}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1CE3231-318C-4764-9A3E-9B6D834B3207}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1CE3231-318C-4764-9A3E-9B6D834B3207}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08BF2820-0AE5-4F45-9494-D9563D83E335}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{08BF2820-0AE5-4F45-9494-D9563D83E335}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08BF2820-0AE5-4F45-9494-D9563D83E335}.Release|Any CPU.ActiveCfg = Release|Any CPU
