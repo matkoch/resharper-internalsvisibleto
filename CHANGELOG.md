@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## vNext
+
+## [2018.3.0] / 2018-12-18
 - Support for ReSharper 2018.3
 
 ## 2018.2.0
@@ -15,3 +17,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## 2017.3.0
 - Support for ReSharper 2017.3
+
+[vNext]: https://github.com/hmemcpy/ReSharper.InternalsVisibleTo/compare/2018.3.0...HEAD
+[2018.3.0]: https://github.com/hmemcpy/ReSharper.InternalsVisibleTo/compare/2018.2.0...2018.3.0
+[2018.2.0]: https://github.com/hmemcpy/ReSharper.InternalsVisibleTo/compare/2018.1.0...2018.2.0
+[2018.1.0]: https://github.com/hmemcpy/ReSharper.InternalsVisibleTo/compare/2017.3.0...2018.1.0
+[2017.3.0]: https://github.com/hmemcpy/ReSharper.InternalsVisibleTo/tree/2017.3.0
+
