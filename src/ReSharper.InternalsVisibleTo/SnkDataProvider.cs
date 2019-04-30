@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Xml;
 using JetBrains.Annotations;
 using JetBrains.DataFlow;
+using JetBrains.Lifetimes;
 using JetBrains.ProjectModel;
 using JetBrains.ProjectModel.Caches;
 using JetBrains.Util;
