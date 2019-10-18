@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## vNext
 
+## [2019.2.2] / 2019-10-18
+- Support for ReSharper 2019.2.2
+
 ## [2019.1.0] / 2019-04-30
 - Support for ReSharper 2019.1
 
@@ -22,6 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Support for ReSharper 2017.3
 
 [vNext]: https://github.com/hmemcpy/ReSharper.InternalsVisibleTo/compare/2019.1.0...HEAD
+[2019.2.2]: https://github.com/hmemcpy/ReSharper.InternalsVisibleTo/compare/2019.1.0...2019.2.2
 [2019.1.0]: https://github.com/hmemcpy/ReSharper.InternalsVisibleTo/compare/2018.3.0...2019.1.0
 [2018.3.0]: https://github.com/hmemcpy/ReSharper.InternalsVisibleTo/compare/2018.2.0...2018.3.0
 [2018.2.0]: https://github.com/hmemcpy/ReSharper.InternalsVisibleTo/compare/2018.1.0...2018.2.0
