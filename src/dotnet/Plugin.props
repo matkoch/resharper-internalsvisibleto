@@ -1,0 +1,16 @@
+<Project>
+  <PropertyGroup>
+    <SdkVersion>2019.3.0</SdkVersion>
+
+    <Title>InternalsVisibleTo Helper</Title>
+    <Description>Provides IntelliSense completion for the InternalsVisibleTo attribute, including the public key value, when required.</Description>
+
+    <Authors>Igal Tabachnik</Authors>
+    <Copyright>Copyright 2013-$([System.DateTime]::Now.Year) Igal Tabachnik</Copyright>
+    <PackageTags>resharper internalsvisibleto publickey tests unit test nunit mstest xunit</PackageTags>
+
+    <PackageProjectUrl>https://github.com/matkoch/ReSharper.InternalsVisibleTo</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/matkoch/ReSharper.InternalsVisibleTo/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageIconUrl>https://raw.github.com/matkoch/ReSharper.InternalsVisibleTo/master/logo.png</PackageIconUrl>
+  </PropertyGroup>
+</Project>
