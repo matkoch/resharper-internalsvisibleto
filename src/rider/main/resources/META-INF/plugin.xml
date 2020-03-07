@@ -1,6 +1,6 @@
 <idea-plugin>
   <id>internalsvisibleto-rider</id>
-  <name>InternalsVisibleTo</name>
+  <name>InternalsVisibleTo Helper</name>
   <version>_PLACEHOLDER_</version>
   <vendor url="https://github.com/matkoch/ReSharper.InternalsVisibleTo">Igal Tabachnik</vendor>
   <idea-version since-build="_PLACEHOLDER_" until-build="_PLACEHOLDER_" />
