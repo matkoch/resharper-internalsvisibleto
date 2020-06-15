@@ -30,7 +30,7 @@ namespace ReSharper.InternalsVisibleTo
 
     protected override bool AddLookupItems(CSharpCodeCompletionContext context, IItemsCollector collector)
     {
-      var solution = context.BasicContext.CompletionManager.Solution;
+      var solution = context.BasicContext.IntellisenseManager.Solution;
       var rangeMarker = context.BasicContext.CaretDocumentOffset.CreateRangeMarker();
 
       foreach (var project in solution.GetAllProjects())
