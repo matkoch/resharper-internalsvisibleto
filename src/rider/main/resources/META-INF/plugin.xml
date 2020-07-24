@@ -1,4 +1,4 @@
-<idea-plugin>
+<idea-plugin require-restart="true">
   <id>internalsvisibleto-rider</id>
   <name>InternalsVisibleTo Helper</name>
   <version>_PLACEHOLDER_</version>
