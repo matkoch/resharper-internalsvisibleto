@@ -1,4 +1,3 @@
-$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 $PluginId = "ReSharper.InternalsVisibleTo"
 $SolutionPath = "$PSScriptRoot\InternalsVisibleTo.sln"
 $SourceBasePath = "$PSScriptRoot\src\dotnet"
