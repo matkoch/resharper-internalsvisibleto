@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
     <IsPackable>false</IsPackable>
+    <RootNamespace>ReSharperPlugin.InternalsVisibleTo.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,11 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ReSharperPlugin.InternalsVisibleTo\ReSharperPlugin.InternalsVisibleTo.csproj" />
+    <Compile Remove="test/**/*" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="test/**/*" />
+    <ProjectReference Include="..\ReSharper.InternalsVisibleTo\ReSharper.InternalsVisibleTo.csproj" />
   </ItemGroup>
 
 </Project>

@@ -8,7 +8,6 @@
 
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
-    <PackageId>ReSharper.InternalsVisibleTo</PackageId>
     <IsPackable>True</IsPackable>
     <DefineConstants>$(DefineConstants);RESHARPER</DefineConstants>
     <IncludeBuildOutput>false</IncludeBuildOutput>
