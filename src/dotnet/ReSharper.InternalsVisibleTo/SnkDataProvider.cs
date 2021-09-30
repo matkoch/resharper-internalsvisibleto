@@ -3,7 +3,6 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Xml;
 using JetBrains.Annotations;
-using JetBrains.DataFlow;
 using JetBrains.Lifetimes;
 using JetBrains.ProjectModel;
 using JetBrains.ProjectModel.Caches;
@@ -15,7 +14,7 @@ namespace ReSharper.InternalsVisibleTo
   [SolutionInstanceComponent]
   internal class SnkDataProvider : IProjectFileDataProvider<byte[]>
   {
-    [CanBeNull] private FileSystemPath myCurrentProjectPath;
+    [CanBeNull] private VirtualFileSystemPath myCurrentProjectPath;
 
     [NotNull] public ProjectFileDataCacheImpl ProjectDataCache { get; }
 
@@ -26,7 +25,7 @@ namespace ReSharper.InternalsVisibleTo
       projectDataCache.RegisterCache(lifetime, this);
     }
 
-    public bool CanHandle(FileSystemPath projectFileLocation)
+    public bool CanHandle(VirtualFileSystemPath projectFileLocation)
     {
       myCurrentProjectPath = projectFileLocation;
       return true;
@@ -34,7 +33,7 @@ namespace ReSharper.InternalsVisibleTo
 
     public int Version { get; } = 0;
 
-    public byte[] Read(FileSystemPath projectFileLocation, BinaryReader reader)
+    public byte[] Read(VirtualFileSystemPath projectFileLocation, BinaryReader reader)
     {
       int length = reader.ReadInt32();
       if (length == 0) return EmptyArray<byte>.Instance;
@@ -42,14 +41,14 @@ namespace ReSharper.InternalsVisibleTo
       return reader.ReadBytes(length);
     }
 
-    public void Write(FileSystemPath projectFileLocation, BinaryWriter writer, byte[] data)
+    public void Write(VirtualFileSystemPath projectFileLocation, BinaryWriter writer, byte[] data)
     {
       var bytes = data;
       writer.Write(bytes.Length);
       writer.Write(bytes);
     }
 
-    public byte[] BuildData(FileSystemPath projectFileLocation, XmlDocument document)
+    public byte[] BuildData(VirtualFileSystemPath projectFileLocation, XmlDocument document)
     {
       if (myCurrentProjectPath == null) return EmptyArray<byte>.Instance;
 
@@ -63,7 +62,7 @@ namespace ReSharper.InternalsVisibleTo
       return EmptyArray<byte>.Instance;
     }
 
-    public Action OnDataChanged(FileSystemPath projectFileLocation, byte[] oldData, byte[] newData)
+    public Action OnDataChanged(VirtualFileSystemPath projectFileLocation, byte[] oldData, byte[] newData)
     {
       return null;
     }
