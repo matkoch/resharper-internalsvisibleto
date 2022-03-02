@@ -11,6 +11,7 @@ using JetBrains.UI.Icons;
 using JetBrains.UI.RichText;
 using JetBrains.Util;
 using JetBrains.Util.Dotnet.TargetFrameworkIds;
+using JetBrains.Util.Media;
 
 namespace ReSharper.InternalsVisibleTo
 {
@@ -39,7 +40,7 @@ namespace ReSharper.InternalsVisibleTo
       if (!string.IsNullOrWhiteSpace(publicKeyString))
       {
         var publicKeyDisplay = LookupUtil.FormatLookupString("PublicKey=" + ellipsis);
-        publicKeyDisplay.SetStyle(TextStyle.FromForeColor(SystemColors.GrayText));
+        publicKeyDisplay.SetStyle(TextStyle.FromForeColor(JetRgbaColors.Gray));
 
         // aligns the "PublicKey=..." text to the right, as if it were a type name
         DisplayTypeName = publicKeyDisplay;
