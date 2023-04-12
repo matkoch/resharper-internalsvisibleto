@@ -17,6 +17,6 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'internalsvisibleto'
+rootProject.name = 'ReSharperPlugin.InternalsVisibleTo'
 
 include ':protocol'
