@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Xml;
 using JetBrains.Annotations;
+using JetBrains.Application.Parts;
 using JetBrains.Lifetimes;
 using JetBrains.ProjectModel;
 using JetBrains.ProjectModel.Caches;
@@ -11,7 +12,7 @@ using Microsoft.CodeAnalysis.Interop;
 
 namespace ReSharper.InternalsVisibleTo
 {
-  [SolutionInstanceComponent]
+  [SolutionInstanceComponent(Instantiation.ContainerAsyncPrimaryThread)]
   internal class SnkDataProvider : IProjectFileDataProvider<byte[]>
   {
     [CanBeNull] private VirtualFileSystemPath myCurrentProjectPath;
